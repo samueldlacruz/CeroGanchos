@@ -49,12 +49,13 @@ export default function InteractiveForm({ questions }: { questions: Question[] }
           ) : (
             <input
               type={filteredQuestions[currentStep].type}
+              {...filteredQuestions[currentStep].type === "number" && { min: 1 }}
               className="w-full p-2 border rounded-md"
               value={responses[filteredQuestions[currentStep].id] || ""}
               onChange={handleChange}
             />
           )}
-          <div className={cn("flex mt-4", currentStep > 0 ? "justify-between": "justify-end")}>
+          <div className={cn("flex mt-4", currentStep > 0 ? "justify-between" : "justify-end")}>
             {currentStep > 0 && (
               <Button onClick={prevStep} variant="outline">
                 Anterior
@@ -71,6 +72,15 @@ export default function InteractiveForm({ questions }: { questions: Question[] }
       <p className="text-lg text-gray-500 mt-5">
         Pregunta {currentStep + 1} de {totalSteps}
       </p>
+
+      {filteredQuestions[currentStep].link && (
+        <Card className="mt-4 w-full max-w-lg p-4 bg-white shadow-md border-l-4 border-blue-500 text-left">
+          <p className="text-lg font-semibold">Importante:</p>
+          <a href={filteredQuestions[currentStep].link} target="_blank" rel="noopener noreferrer" className="text-blue-500 text-base underline">
+            {filteredQuestions[currentStep].linkDescription}
+          </a>
+        </Card>
+      )}
     </div>
   );
 }
