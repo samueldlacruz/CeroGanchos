@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 import { Question } from "../interfaces/Question";
 import { cn } from "../lib/utils";
 
-export default function InteractiveForm({ questions }: { questions: Question[] }) {
+export default function InteractiveForm({ questions, onSubmit }: { questions: Question[], onSubmit: (responses: Record<number, string>) => void }) {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [responses, setResponses] = useState<Record<number, string>>({});
 
@@ -27,6 +27,10 @@ export default function InteractiveForm({ questions }: { questions: Question[] }
     }
   };
 
+  const handleSubmit = () => {
+    onSubmit(responses);
+  };
+
   return (
     <div className="flex justify-center flex-col items-center h-screen bg-gray-100 md:px-0 px-4">
       <Card className="w-full max-w-lg p-6 text-center">
@@ -36,13 +40,13 @@ export default function InteractiveForm({ questions }: { questions: Question[] }
           </h2>
           {filteredQuestions[currentStep].type === "select" ? (
             <div className="flex flex-col space-y-2">
-              {filteredQuestions[currentStep].options?.map((option) => (
+              {filteredQuestions[currentStep].options?.map((option, index) => (
                 <Button
-                  key={option}
-                  variant={responses[filteredQuestions[currentStep].id] === option ? "default" : "outline"}
-                  onClick={() => setResponses({ ...responses, [filteredQuestions[currentStep].id]: option })}
+                  key={`${option.label}-${index}`}
+                  variant={responses[filteredQuestions[currentStep].id] === option.slug ? "default" : "outline"}
+                  onClick={() => setResponses({ ...responses, [filteredQuestions[currentStep].id]: option.slug })}
                 >
-                  {option}
+                  {option.label}
                 </Button>
               ))}
             </div>
@@ -64,7 +68,7 @@ export default function InteractiveForm({ questions }: { questions: Question[] }
             {currentStep < filteredQuestions.length - 1 ? (
               <Button onClick={nextStep}>Siguiente</Button>
             ) : (
-              <Button onClick={() => alert("Formulario enviado!")}>Enviar</Button>
+              <Button onClick={handleSubmit}>Enviar</Button>
             )}
           </div>
         </CardContent>
