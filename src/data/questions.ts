@@ -216,6 +216,16 @@ export const shoppingQuestions: Question[] = [
   },
 ];
 
+export const shoppingTips = [
+  "Compra solo en páginas con dominios confiables y oficiales.",
+  "Verifica la URL y usa buscadores para confirmar su autenticidad.",
+  "Nunca ingreses datos bancarios en sitios sospechosos.",
+  "Desconfía de precios demasiado bajos y compara con otras tiendas.",
+  "Prefiere métodos de pago seguros y evita transferencias sin respaldo.",
+  "Si hay varias cuentas con el mismo nombre y logo, podría ser una estafa."
+]
+
+
 export const investmentQuestions: Question[] = [
   {
     id: 1,
