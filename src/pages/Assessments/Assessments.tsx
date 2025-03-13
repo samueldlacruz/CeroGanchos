@@ -7,7 +7,7 @@ const Assessments = () => {
     return (
         <PageContainer>
             <Header withoutNav />
-            <main className="h-full">
+            <main className="h-full bg-gray-100">
                 <AssessmentsList />
             </main>
             <Footer />

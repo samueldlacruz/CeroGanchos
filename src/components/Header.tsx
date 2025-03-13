@@ -7,7 +7,7 @@ const Header = ({ withoutNav = false }: { withoutNav?: boolean }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <header className="bg-white shadow-sm">
+        <header className="bg-white shadow-sm border-b">
             <nav className={cn("max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center", withoutNav ? "justify-center h-24" : "justify-between h-16")}>
                 <div className="flex items-center space-x-2">
                     <ShieldX className="h-8 w-8 text-emerald-600" />

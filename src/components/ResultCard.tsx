@@ -22,17 +22,17 @@ const ResultCard = ({ score, setShowResults, className }: ResultCardProps) => {
                 <h2 className="text-6xl text-center">
                     <Count duration={1} number={score.toFixed(2)} />
                 </h2>
-                <small className="text-3xl">{" "}/ 10</small>
+                <small className="text-3xl">{" "}/ 100</small>
             </div>
             <hr className="mb-8 w-full" />
             <p className="text-xl text-gray-600 mb-8 max-w-2xl text-left mx-auto">
-                {score < 4
+                {score < 40
                     ? <span>✅ <strong>Confiable:</strong> Parece una tienda legítima.</span>
-                    : score < 7
+                    : score < 70
                         ? <span>🤔 <strong>Dudoso:</strong> Investiga más antes de comprar.</span>
                         : <span>⚠️ <strong>Peligroso: </strong> Evita comprar aqui.</span>}
             </p>
-            <button className='bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-4 px-4 rounded' onClick={() => setShowResults(false)}>
+            <button className='bg-emerald-600 w-full hover:bg-emerald-700 text-white font-bold py-4 px-4 rounded' onClick={() => setShowResults(false)}>
                 Volver a realizar la evaluación
             </button>
             <button className="bg-gray-500 w-full hover:bg-gray-700 text-white font-bold py-4 px-4 rounded mt-4" onClick={() => navigate("/evaluaciones")}>

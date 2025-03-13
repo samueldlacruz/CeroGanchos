@@ -9,6 +9,9 @@ import ResultCard from '../../components/ResultCard'
 import TipsCard from '../../components/TipsCard'
 import { investmentQuestions, shoppingQuestions, shoppingTips } from '../../data/questions'
 import { Question } from '../../interfaces/Question'
+import { Progress } from '../../components/ui/progress'
+import LoadingText from '../../components/LoadingText'
+import { cn } from '../../lib/utils'
 
 const SpecificAssessment = () => {
 
@@ -16,11 +19,14 @@ const SpecificAssessment = () => {
   const [showResults, setShowResults] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [viabilityScore, setViabilityScore] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   const questionsByTopic: Record<string, Question[]> = {
     "compras": shoppingQuestions,
     "inversiones": investmentQuestions
   };
+
+  const questions = questionsByTopic[topic!];
 
   const calculateWeightedSum = (responses: Record<number, string>) => {
 
@@ -28,7 +34,7 @@ const SpecificAssessment = () => {
     let weightedSum = 0;
 
     for (const questionId in responses) {
-      const question = questionsByTopic[topic!].find(q => q.id === Number(questionId));
+      const question = questions.find(q => q.id === Number(questionId));
 
       if (question) {
         const response = responses[Number(questionId)];
@@ -41,7 +47,7 @@ const SpecificAssessment = () => {
       }
     }
 
-    return totalWeight ? (weightedSum / totalWeight) * 10 : 0;
+    return totalWeight ? (weightedSum / totalWeight) * 100 : 0;
   }
 
   const getViabilityScore = (userResponses: Record<number, string>) => {
@@ -49,19 +55,41 @@ const SpecificAssessment = () => {
     const _viabilityScore = calculateWeightedSum(userResponses);
     setViabilityScore(_viabilityScore);
 
+    const interval = setInterval(() => {
+      setProgress((prevProgress) => {
+        const newProgress = prevProgress + 10;
+        return newProgress > 100 ? 100 : newProgress;
+      });
+    }, 500);
+
     setTimeout(() => {
+      clearInterval(interval);
+      setProgress(0);
       setShowResults(true);
       setIsLoading(false);
-    }, 3000)
+    }, 7000)
   }
 
   return (
     <PageContainer>
       <Header withoutNav={true} />
       <main className="h-full">
-        {((topic !== undefined && questionsByTopic[topic]) && !showResults) ? (
+        {isLoading && (
+          <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
+            <Progress value={progress} className="w-[60%] mb-3" indicatorClassName={cn(progress > 80 ? "bg-emerald-600" : "bg-blue-600")} />
+             <LoadingText 
+               texts={[
+                 "Estamos analizando tus respuestas...",
+                 "Chequeando que tan real es tu compra...",
+                 "Verificando que tan confiable esa inversión...",
+                 "Cargando resultados..."
+                ]}
+             />
+          </div>
+        )}
+        {((topic !== undefined && questions.length) && !showResults && !isLoading) ? (
           <InteractiveForm
-            questions={questionsByTopic[topic]}
+            questions={questions}
             onSubmit={getViabilityScore}
           />
         ) : (
@@ -71,19 +99,13 @@ const SpecificAssessment = () => {
                 <ResultCard
                   score={viabilityScore}
                   setShowResults={setShowResults}
-                  className=" col-span-3 row-span-2 col-start-2"
+                  className=" col-span-3 row-span-2 col-start-2 col-end-5"
                 />
                 <DisclaimerCard className="col-span-3 col-start-5" />
                 <TipsCard className="col-span-3 col-start-5" tips={shoppingTips} />
               </div>
             )}
           </>
-        )}
-
-        {isLoading && (
-          <div className="min-h-screen bg-gray-100 flex justify-center items-center">
-            <div className="col-span-3 row-span-2 col-start-2">Cargando...</div>
-          </div>
         )}
       </main>
       <Footer />
