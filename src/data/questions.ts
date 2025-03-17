@@ -226,6 +226,14 @@ export const shoppingTips = [
   "Si hay varias cuentas con el mismo nombre y logo, podría ser una estafa.",
 ];
 
+export const investmentTips = [
+"Ninguna inversión legítima garantiza ganancias fijas y rápidas sin riesgo.",
+"Verifica siempre que la empresa esté regulada por una entidad oficial.",
+"Investiga a los fundadores y su historial antes de confiar tu dinero.",
+"No inviertas si te presionan a hacerlo rápido o sin explicaciones claras.",
+"Encontrar un buen experto en el mercado es importante.",
+]
+
 export const investmentQuestions: Question[] = [
   {
     id: 1,
@@ -290,7 +298,7 @@ export const investmentQuestions: Question[] = [
       { score: 0, slug: "yes", label: "Sí" },
       { score: 1, slug: "no", label: "No" },
     ],
-    condition: (responses) => responses[5].slug === "yes",
+    condition: (responses) => responses[5]?.slug === "yes",
   },
   {
     id: 7,
@@ -389,7 +397,7 @@ export const investmentQuestions: Question[] = [
     link: "https://www.rexi.do/entidades/administradoras-de-fondos-de-inversion?p=1&ido=true&o=3",
     linkDescription:
       "Verificar si aparece en esta lista de fondos de inversión regularizados, consulta la regulación aqui",
-    condition: (responses) => responses[11].slug === "investment-fund",
+    condition: (responses) => responses[11]?.slug === "investment-fund",
   },
   {
     id: 15,
@@ -403,7 +411,7 @@ export const investmentQuestions: Question[] = [
     link: "https://idecoop.gob.do/servicios/cooperativas-incorporadas-listado-general/",
     linkDescription:
       "Verificar si aparece en esta lista de cooperativas regularizadas, consulta la regulación aqui",
-    condition: (responses) => responses[11].slug === "cooperative",
+    condition: (responses) => responses[11]?.slug === "cooperative",
   },
   {
     id: 16,
@@ -415,7 +423,7 @@ export const investmentQuestions: Question[] = [
     ],
     weight: 4,
     condition: (responses) =>
-      ["investment", "investment-fund", "cooperative"].includes(responses[11].slug),
+      ["investment", "investment-fund", "cooperative"].includes(responses[11]?.slug),
   },
   {
     id: 17,
@@ -429,10 +437,21 @@ export const investmentQuestions: Question[] = [
     link: "https://apb.org.do/quienes-somos/",
     linkDescription:
       "Verifica si aparece en la parte de asociados de la Asociación de Puestos de Bolsa, consulta aqui",
-    condition: (responses) => responses[11].slug === "stock-exchange",
+    condition: (responses) => responses[11]?.slug === "stock-exchange",
   },
   {
     id: 18,
+    text: "¿Te invitan a unirte a un grupo en Whatsapp o Telegram?",
+    type: "select",
+    options: [
+      { score: 1, slug: "yes", label: "Sí" },
+      { score: 0, slug: "no", label: "No" },
+    ],
+    weight: 2,
+    condition: (responses) => responses[11]?.slug !== "other",
+  },
+  {
+    id: 19,
     text: "¿Ofrecen factura o comprobante fiscal por cada venta/alquiler?",
     type: "select",
     weight: 9,
@@ -441,5 +460,6 @@ export const investmentQuestions: Question[] = [
       { label: "Solo en algunas ventas", score: 3, slug: "some-sales" },
       { label: "No", score: 0, slug: "no" },
     ],
+    condition: (responses) => responses[11]?.slug === "rent-or-lease",
   },
 ];
