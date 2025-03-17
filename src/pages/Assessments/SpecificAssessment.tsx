@@ -28,7 +28,7 @@ const SpecificAssessment = () => {
 
   const questions = questionsByTopic[topic!];
 
-  const calculateWeightedSum = (responses: Record<number, string>) => {
+  const calculateWeightedSum = (responses: Record<number, { slug: string; isValid: boolean }>) => {
 
     let totalWeight = 0;
     let weightedSum = 0;
@@ -39,7 +39,7 @@ const SpecificAssessment = () => {
       if (question) {
         const response = responses[Number(questionId)];
 
-        const score = question.options?.find(o => o.slug === response)?.score || 0;
+        const score = question.options?.find(o => o.slug === response.slug)?.score || 0;
         const weight = question.weight || 0;
 
         totalWeight += weight;
@@ -50,7 +50,7 @@ const SpecificAssessment = () => {
     return totalWeight ? (weightedSum / totalWeight) * 100 : 0;
   }
 
-  const getViabilityScore = (userResponses: Record<number, string>) => {
+  const getViabilityScore = (userResponses: Record<number, { slug: string; isValid: boolean }>) => {
     setIsLoading(true);
     const _viabilityScore = calculateWeightedSum(userResponses);
     setViabilityScore(_viabilityScore);

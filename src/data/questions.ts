@@ -21,14 +21,15 @@ export const shoppingQuestions: Question[] = [
       { score: 1, slug: "yes", label: "Sí" },
       { score: 0, slug: "no", label: "No" },
     ],
-    condition: (responses) => responses[1] === "pagina-web",
+    condition: (responses) => responses[1]?.slug === "pagina-web",
     weight: 4,
   },
   {
     id: 3,
     text: "Introduce la URL para verificar su seguridad:",
     type: "text",
-    condition: (responses) => responses[1] === "pagina-web",
+    condition: (responses) => responses[1]?.slug === "pagina-web",
+    validate:  (value) => value.startsWith("http"),
     weight: 3,
   },
   {
@@ -40,7 +41,7 @@ export const shoppingQuestions: Question[] = [
       { score: 1, slug: "no", label: "No" },
     ],
     condition: (responses) =>
-      ["Instagram", "Facebook", "Tiktok"].includes(responses[1]),
+      ["Instagram", "Facebook", "Tiktok"].includes(responses[1]?.slug),
     weight: 4,
   },
   {
@@ -52,7 +53,7 @@ export const shoppingQuestions: Question[] = [
       { score: 1, slug: "no", label: "No" },
     ],
     condition: (responses) =>
-      ["Instagram", "Facebook", "Tiktok"].includes(responses[1]),
+      ["Instagram", "Facebook", "Tiktok"].includes(responses[1]?.slug),
     weight: 3,
   },
   {
@@ -64,7 +65,7 @@ export const shoppingQuestions: Question[] = [
       { score: 0, slug: "no", label: "No" },
     ],
     condition: (responses) =>
-      ["Instagram", "Facebook", "Tiktok"].includes(responses[1]),
+      ["Instagram", "Facebook", "Tiktok"].includes(responses[1]?.slug),
     weight: 5,
   },
   {
@@ -95,7 +96,7 @@ export const shoppingQuestions: Question[] = [
       { score: 0, slug: "yes", label: "Sí" },
       { score: 1, slug: "no", label: "No" },
     ],
-    condition: (responses) => responses[8] === "no",
+    condition: (responses) => responses[8]?.slug === "no",
     weight: 3,
   },
   {
@@ -126,7 +127,7 @@ export const shoppingQuestions: Question[] = [
       { score: 0, slug: "yes", label: "Responde" },
       { score: 1, slug: "no", label: "Evade" },
     ],
-    condition: (responses) => responses[11] === "no",
+    condition: (responses) => responses[11]?.slug === "no",
     weight: 3,
   },
   {
@@ -147,7 +148,7 @@ export const shoppingQuestions: Question[] = [
       { score: 0, slug: "yes", label: "Sí" },
       { score: 1, slug: "no", label: "No" },
     ],
-    condition: (responses) => responses[13] === "yes",
+    condition: (responses) => responses[13]?.slug === "yes",
     weight: 3,
   },
   {
@@ -158,7 +159,7 @@ export const shoppingQuestions: Question[] = [
       { score: 0, slug: "yes", label: "Sí" },
       { score: 1, slug: "no", label: "No" },
     ],
-    condition: (responses) => responses[13] === "yes",
+    condition: (responses) => responses[13]?.slug === "yes",
     weight: 4,
   },
   {
@@ -189,7 +190,7 @@ export const shoppingQuestions: Question[] = [
       { score: 0, slug: "yes", label: "Sí" },
       { score: 1, slug: "no", label: "No" },
     ],
-    condition: (responses) => responses[17] === "no",
+    condition: (responses) => responses[17]?.slug === "no",
     weight: 3,
   },
   {
@@ -200,7 +201,7 @@ export const shoppingQuestions: Question[] = [
       { score: 0, slug: "yes", label: "Detallada" },
       { score: 1, slug: "no", label: "Genérica" },
     ],
-    condition: (responses) => responses[17] === "no",
+    condition: (responses) => responses[17]?.slug === "no",
     weight: 3,
   },
   {
@@ -211,7 +212,7 @@ export const shoppingQuestions: Question[] = [
       { score: 0, slug: "yes", label: "Propias" },
       { score: 1, slug: "no", label: "De Google" },
     ],
-    condition: (responses) => responses[17] === "no",
+    condition: (responses) => responses[17]?.slug === "no",
     weight: 3,
   },
 ];
@@ -289,7 +290,7 @@ export const investmentQuestions: Question[] = [
       { score: 0, slug: "yes", label: "Sí" },
       { score: 1, slug: "no", label: "No" },
     ],
-    condition: (responses) => responses[5] === "yes",
+    condition: (responses) => responses[5].slug === "yes",
   },
   {
     id: 7,
@@ -328,7 +329,7 @@ export const investmentQuestions: Question[] = [
       { score: 0, slug: "no", label: "No" },
     ],
     weight: 3,
-    condition: (responses) => responses[9] === "yes",
+    condition: (responses) => responses[9]?.slug === "yes",
   },
   {
     id: 11,
@@ -360,7 +361,7 @@ export const investmentQuestions: Question[] = [
     ],
     link: "https://loterianacional.gob.do/Listadoregularizacion/bancas_deportivas",
     linkDescription: "Consulta la regulación aquí",
-    condition: (responses) => responses[11] === "sports-betting",
+    condition: (responses) => responses[11]?.slug === "sports-betting",
   },
   {
     id: 13,
@@ -374,7 +375,7 @@ export const investmentQuestions: Question[] = [
     link: "https://simv.gob.do/registro-del-mercado-de-valores/",
     linkDescription:
       "¿Puedo verificar su registro en la web de la Superintendencia de Valores o Banco Central?, consulta la regulación aqui",
-    condition: (responses) => responses[11] === "investment",
+    condition: (responses) => responses[11]?.slug === "investment",
   },
   {
     id: 14,
@@ -388,7 +389,7 @@ export const investmentQuestions: Question[] = [
     link: "https://www.rexi.do/entidades/administradoras-de-fondos-de-inversion?p=1&ido=true&o=3",
     linkDescription:
       "Verificar si aparece en esta lista de fondos de inversión regularizados, consulta la regulación aqui",
-    condition: (responses) => responses[11] === "investment-fund",
+    condition: (responses) => responses[11].slug === "investment-fund",
   },
   {
     id: 15,
@@ -402,7 +403,7 @@ export const investmentQuestions: Question[] = [
     link: "https://idecoop.gob.do/servicios/cooperativas-incorporadas-listado-general/",
     linkDescription:
       "Verificar si aparece en esta lista de cooperativas regularizadas, consulta la regulación aqui",
-    condition: (responses) => responses[11] === "cooperative",
+    condition: (responses) => responses[11].slug === "cooperative",
   },
   {
     id: 16,
@@ -414,7 +415,7 @@ export const investmentQuestions: Question[] = [
     ],
     weight: 4,
     condition: (responses) =>
-      ["investment", "investment-fund", "cooperative"].includes(responses[11]),
+      ["investment", "investment-fund", "cooperative"].includes(responses[11].slug),
   },
   {
     id: 17,
@@ -428,7 +429,7 @@ export const investmentQuestions: Question[] = [
     link: "https://apb.org.do/quienes-somos/",
     linkDescription:
       "Verifica si aparece en la parte de asociados de la Asociación de Puestos de Bolsa, consulta aqui",
-    condition: (responses) => responses[11] === "stock-exchange",
+    condition: (responses) => responses[11].slug === "stock-exchange",
   },
   {
     id: 18,

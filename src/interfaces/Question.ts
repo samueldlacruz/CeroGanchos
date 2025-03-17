@@ -11,6 +11,7 @@ export interface Question {
   options?: IOption[];
   link?: string;
   linkDescription?: string;
+  condition?: (responses: Record<number, { slug: string; isValid: boolean }>) => boolean;
+  validate?: (value: string, responses: Record<number, { slug: string; isValid: boolean }>) => boolean;
   weight?: number;
-  condition?: (responses: Record<number, string>) => boolean;
 }
