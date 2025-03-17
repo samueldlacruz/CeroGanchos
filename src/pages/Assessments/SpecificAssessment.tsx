@@ -7,11 +7,21 @@ import InteractiveForm from '../../components/InteractiveForm'
 import PageContainer from '../../components/PageContainer'
 import ResultCard from '../../components/ResultCard'
 import TipsCard from '../../components/TipsCard'
-import { investmentQuestions, shoppingQuestions, shoppingTips } from '../../data/questions'
+import { investmentQuestions, investmentTips, shoppingQuestions, shoppingTips } from '../../data/questions'
 import { Question } from '../../interfaces/Question'
 import { Progress } from '../../components/ui/progress'
 import LoadingText from '../../components/LoadingText'
 import { cn } from '../../lib/utils'
+
+const questionsByTopic: Record<string, Question[]> = {
+  "compras": shoppingQuestions,
+  "inversiones": investmentQuestions
+};
+
+const tipsByTopic: Record<string, string[]> = {
+  "compras": shoppingTips,
+  "inversiones": investmentTips
+};
 
 const SpecificAssessment = () => {
 
@@ -21,11 +31,8 @@ const SpecificAssessment = () => {
   const [viabilityScore, setViabilityScore] = useState(0);
   const [progress, setProgress] = useState(0);
 
-  const questionsByTopic: Record<string, Question[]> = {
-    "compras": shoppingQuestions,
-    "inversiones": investmentQuestions
-  };
 
+  const tips = tipsByTopic[topic!];
   const questions = questionsByTopic[topic!];
 
   const calculateWeightedSum = (responses: Record<number, { slug: string; isValid: boolean }>) => {
@@ -95,14 +102,14 @@ const SpecificAssessment = () => {
         ) : (
           <>
             {showResults && (
-              <div className="place-content-center fade-in-10 duration-150 ease-in-out items-center bg-gray-200 grid grid-cols-8 grid-rows-2 gap-4 py-10 px-4 md:px-0">
+              <div className="place-content-center fade-in-10 duration-150 ease-in-out items-center bg-gray-200 grid grid-cols-8 grid-rows-3 md:grid-rows-2 gap-4 py-10 px-4 md:px-0">
                 <ResultCard
                   score={viabilityScore}
                   setShowResults={setShowResults}
-                  className=" col-span-3 row-span-2 col-start-2 col-end-5"
+                  className="col-span-3 row-span-2 md:col-start-2 col-start-1 lg:col-end-5 md:col-end-8 col-end-9"
                 />
-                <DisclaimerCard className="col-span-3 col-start-5" />
-                <TipsCard className="col-span-3 col-start-5" tips={shoppingTips} />
+                <TipsCard className="col-span-3 lg:col-start-5 md:col-start-2 col-start-1 md:col-end-8 col-end-9" tips={tips} />
+                <DisclaimerCard className="col-span-3 lg:col-start-5 md:col-start-2 col-start-1 md:col-end-8 col-end-9" />
               </div>
             )}
           </>
