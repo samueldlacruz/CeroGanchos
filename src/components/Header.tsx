@@ -31,7 +31,7 @@ const Header = ({ withoutNav = false }: { withoutNav?: boolean }) => {
                             <a href="#evaluaciones" className="text-gray-600 hover:text-gray-900">Evaluaciones</a>
                             <a href="#caracteristicas" className="text-gray-600 hover:text-gray-900">Características</a>
                             <a href="#como-funciona" className="text-gray-600 hover:text-gray-900">Cómo funciona</a>
-                            <Link to="/evaluaciones" className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition">
+                            <Link to="/evaluaciones" className="bg-emerald-700 font-semibold text-white px-4 py-2 rounded-lg hover:bg-emerald-500 transition">
                                 Comienza ahora
                             </Link>
                         </div>
@@ -42,7 +42,7 @@ const Header = ({ withoutNav = false }: { withoutNav?: boolean }) => {
                                 <a href="#evaluaciones" className="text-gray-600 hover:text-gray-900">Evaluaciones</a>
                                 <a href="#caracteristicas" className="text-gray-600 hover:text-gray-900">Características</a>
                                 <a href="#como-funciona" className="text-gray-600 hover:text-gray-900">Cómo funciona</a>
-                                <Link to="/evaluaciones" className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition">
+                                <Link to="/evaluaciones" className="bg-emerald-700 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition">
                                     Comienza ahora
                                 </Link>
                             </div>

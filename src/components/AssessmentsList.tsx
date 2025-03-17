@@ -8,7 +8,7 @@ const AssessmentsList = () => {
     return (
         <section id="evaluaciones" className="bg-white py-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 className="text-3xl font-bold text-center mb-12">Nuestras evaluaciones</h2>
+                <h1 className="text-3xl font-bold text-center mb-12">Nuestras evaluaciones</h1>
                 <div className="grid md:grid-cols-2 gap-8">
                     <div className="bg-gradient-to-br from-emerald-50 to-white p-8 rounded-xl shadow-lg border border-emerald-100">
                         <div className="bg-white p-3 rounded-full w-fit mb-6">
@@ -33,7 +33,7 @@ const AssessmentsList = () => {
                                 <span>Verifica que tan confiable es la empresa</span>
                             </li>
                         </ul>
-                        <button onClick={() => navigate('/evaluaciones/compras', { viewTransition: true })} className="w-full bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 transition flex items-center justify-center space-x-2">
+                        <button onClick={() => navigate('/evaluaciones/compras', { viewTransition: true })} className="w-full bg-emerald-700 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 transition flex items-center justify-center space-x-2">
                             <span>Comienza a Depurar esa Pagina</span>
                             <ArrowRight className="h-5 w-5" />
                         </button>
