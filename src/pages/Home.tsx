@@ -6,11 +6,11 @@ import AssessmentsList from '../components/AssessmentsList';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import PageContainer from '../components/PageContainer';
+import { baseURL } from '../config';
 
 const Home = () => {
     const navigate = useNavigate();
-    const baseURL = import.meta.env.VITE_SITE_URL;
-    
+
     return (
         <Fragment>
             <Helmet>

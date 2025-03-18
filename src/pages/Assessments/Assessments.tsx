@@ -4,9 +4,9 @@ import Footer from "../../components/Footer"
 import Header from "../../components/Header"
 import PageContainer from "../../components/PageContainer"
 import { Helmet } from "react-helmet-async"
+import { baseURL } from "../../config"
 
 const Assessments = () => {
-    const baseURL = import.meta.env.VITE_SITE_URL;
 
     return (
         <Fragment>

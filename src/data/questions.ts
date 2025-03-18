@@ -20,16 +20,17 @@ export const shoppingQuestions: Question[] = [
     options: [
       { score: 1, slug: "yes", label: "Sí" },
       { score: 0, slug: "no", label: "No" },
+      { label: "No se", slug: "idk", score: 0 },
     ],
     condition: (responses) => responses[1]?.slug === "pagina-web",
-    weight: 4,
+    weight: 2,
   },
   {
     id: 3,
     text: "Introduce la URL para verificar su seguridad:",
     type: "text",
     condition: (responses) => responses[1]?.slug === "pagina-web",
-    validate:  (value) => value.startsWith("http"),
+    validate: (value) => value.startsWith("http"),
     weight: 3,
   },
   {
@@ -75,6 +76,7 @@ export const shoppingQuestions: Question[] = [
     options: [
       { score: 1, slug: "yes", label: "Sí" },
       { score: 0, slug: "no", label: "No" },
+      { label: "No se", slug: "idk", score: 0 },
     ],
     weight: 5,
   },
@@ -95,6 +97,7 @@ export const shoppingQuestions: Question[] = [
     options: [
       { score: 0, slug: "yes", label: "Sí" },
       { score: 1, slug: "no", label: "No" },
+      { label: "No se", slug: "idk", score: 0 },
     ],
     condition: (responses) => responses[8]?.slug === "no",
     weight: 3,
@@ -132,7 +135,7 @@ export const shoppingQuestions: Question[] = [
   },
   {
     id: 13,
-    text: "¿Solo aceptan pagos en efectivo, transferencias sin factura o criptomonedas?",
+    text: "¿Solo aceptan pagos en transferencias?",
     type: "select",
     options: [
       { score: 1, slug: "yes", label: "Sí" },
@@ -148,7 +151,7 @@ export const shoppingQuestions: Question[] = [
       { score: 0, slug: "yes", label: "Sí" },
       { score: 1, slug: "no", label: "No" },
     ],
-    condition: (responses) => responses[13]?.slug === "yes",
+    condition: (responses) => responses[13]?.slug !== undefined,
     weight: 3,
   },
   {
@@ -227,12 +230,12 @@ export const shoppingTips = [
 ];
 
 export const investmentTips = [
-"Ninguna inversión legítima garantiza ganancias fijas y rápidas sin riesgo.",
-"Verifica siempre que la empresa esté regulada por una entidad oficial.",
-"Investiga a los fundadores y su historial antes de confiar tu dinero.",
-"No inviertas si te presionan a hacerlo rápido o sin explicaciones claras.",
-"Encontrar un buen experto en el mercado es importante.",
-]
+  "Ninguna inversión legítima garantiza ganancias fijas y rápidas sin riesgo.",
+  "Verifica siempre que la empresa esté regulada por una entidad oficial.",
+  "Investiga a los fundadores y su historial antes de confiar tu dinero.",
+  "No inviertas si te presionan a hacerlo rápido o sin explicaciones claras.",
+  "Encontrar un buen experto en el mercado es importante.",
+];
 
 export const investmentQuestions: Question[] = [
   {
@@ -245,7 +248,7 @@ export const investmentQuestions: Question[] = [
       { label: "1-3 años", slug: "one-three", score: 1 },
       { label: "Más de 3 años", slug: "more-three", score: 2 },
       { label: "No lo especifica", slug: "none", score: 0 },
-    ]
+    ],
   },
   {
     id: 2,
@@ -277,37 +280,34 @@ export const investmentQuestions: Question[] = [
     options: [
       { label: "Sí", slug: "yes", score: 1 },
       { label: "No", slug: "no", score: 0 },
+      { label: "No se", slug: "idk", score: 0 },
     ],
   },
   {
     id: 5,
     text: "¿Sabes cómo genera ganancias esta empresa?",
     type: "select",
-    weight: 3,
+    weight: 2,
     options: [
       { score: 0, slug: "yes", label: "Sí" },
       { score: 1, slug: "no", label: "No" },
+      { label: "No se", slug: "idk", score: 0 },
     ],
   },
   {
     id: 6,
     text: "¿Publican informes financieros o estados de resultados?",
     type: "select",
-    weight: 5,
+    weight: 3,
     options: [
       { score: 0, slug: "yes", label: "Sí" },
       { score: 1, slug: "no", label: "No" },
+      { label: "No se", slug: "idk", score: 0 },
     ],
     condition: (responses) => responses[5]?.slug === "yes",
   },
   {
     id: 7,
-    text: "¿Cómo explican su rentabilidad?",
-    type: "text",
-    weight: 0,
-  },
-  {
-    id: 8,
     text: "¿Posee RNC?",
     type: "select",
     options: [
@@ -319,7 +319,7 @@ export const investmentQuestions: Question[] = [
     weight: 4,
   },
   {
-    id: 9,
+    id: 8,
     text: "¿Operan desde oficinas físicas o solo por redes sociales?",
     type: "select",
     options: [
@@ -329,18 +329,19 @@ export const investmentQuestions: Question[] = [
     weight: 4,
   },
   {
-    id: 10,
+    id: 9,
     text: "¿Es necesario ir a una sucursal específica para retirar el dinero?",
     type: "select",
     options: [
       { score: 1, slug: "yes", label: "Sí" },
       { score: 0, slug: "no", label: "No" },
+      { label: "No se", slug: "idk", score: 0.5 },
     ],
     weight: 3,
-    condition: (responses) => responses[9]?.slug === "yes",
+    condition: (responses) => responses[8]?.slug === "yes",
   },
   {
-    id: 11,
+    id: 10,
     text: "¿Este negocio tiene que ver con algunas de estas cosas?",
     type: "select",
     weight: 0,
@@ -359,7 +360,7 @@ export const investmentQuestions: Question[] = [
     ],
   },
   {
-    id: 12,
+    id: 11,
     text: "¿La banca deportiva está regularizada?",
     type: "select",
     weight: 7,
@@ -369,10 +370,10 @@ export const investmentQuestions: Question[] = [
     ],
     link: "https://loterianacional.gob.do/Listadoregularizacion/bancas_deportivas",
     linkDescription: "Consulta la regulación aquí",
-    condition: (responses) => responses[11]?.slug === "sports-betting",
+    condition: (responses) => responses[10]?.slug === "sports-betting",
   },
   {
-    id: 13,
+    id: 12,
     text: "¿Conoces si estas inversiones estan regularizada?",
     type: "select",
     weight: 5,
@@ -383,10 +384,10 @@ export const investmentQuestions: Question[] = [
     link: "https://simv.gob.do/registro-del-mercado-de-valores/",
     linkDescription:
       "¿Puedo verificar su registro en la web de la Superintendencia de Valores o Banco Central?, consulta la regulación aqui",
-    condition: (responses) => responses[11]?.slug === "investment",
+    condition: (responses) => responses[10]?.slug === "investment",
   },
   {
-    id: 14,
+    id: 13,
     text: "¿Conoces si este fondo de inversión estan regularizada?",
     type: "select",
     weight: 5,
@@ -397,10 +398,10 @@ export const investmentQuestions: Question[] = [
     link: "https://www.rexi.do/entidades/administradoras-de-fondos-de-inversion?p=1&ido=true&o=3",
     linkDescription:
       "Verificar si aparece en esta lista de fondos de inversión regularizados, consulta la regulación aqui",
-    condition: (responses) => responses[11]?.slug === "investment-fund",
+    condition: (responses) => responses[10]?.slug === "investment-fund",
   },
   {
-    id: 15,
+    id: 14,
     text: "¿Conoces si estas cooperativas estan regularizadas?",
     type: "select",
     weight: 5,
@@ -411,10 +412,10 @@ export const investmentQuestions: Question[] = [
     link: "https://idecoop.gob.do/servicios/cooperativas-incorporadas-listado-general/",
     linkDescription:
       "Verificar si aparece en esta lista de cooperativas regularizadas, consulta la regulación aqui",
-    condition: (responses) => responses[11]?.slug === "cooperative",
+    condition: (responses) => responses[10]?.slug === "cooperative",
   },
   {
-    id: 16,
+    id: 15,
     text: "¿Existen restricciones para retirar fondos o dinero?",
     type: "select",
     options: [
@@ -423,10 +424,12 @@ export const investmentQuestions: Question[] = [
     ],
     weight: 4,
     condition: (responses) =>
-      ["investment", "investment-fund", "cooperative"].includes(responses[11]?.slug),
+      ["investment", "investment-fund", "cooperative"].includes(
+        responses[10]?.slug
+      ),
   },
   {
-    id: 17,
+    id: 16,
     text: "¿Conoces si este puesto de bolsa esta asociado a la Asociación de Puestos de Bolsa de la República Dominicana?",
     type: "select",
     weight: 5,
@@ -437,10 +440,10 @@ export const investmentQuestions: Question[] = [
     link: "https://apb.org.do/quienes-somos/",
     linkDescription:
       "Verifica si aparece en la parte de asociados de la Asociación de Puestos de Bolsa, consulta aqui",
-    condition: (responses) => responses[11]?.slug === "stock-exchange",
+    condition: (responses) => responses[10]?.slug === "stock-exchange",
   },
   {
-    id: 18,
+    id: 17,
     text: "¿Te invitan a unirte a un grupo en Whatsapp o Telegram?",
     type: "select",
     options: [
@@ -448,10 +451,10 @@ export const investmentQuestions: Question[] = [
       { score: 0, slug: "no", label: "No" },
     ],
     weight: 2,
-    condition: (responses) => responses[11]?.slug !== "other",
+    condition: (responses) => responses[10]?.slug !== "other",
   },
   {
-    id: 19,
+    id: 18,
     text: "¿Ofrecen factura o comprobante fiscal por cada venta/alquiler?",
     type: "select",
     weight: 9,
@@ -460,6 +463,6 @@ export const investmentQuestions: Question[] = [
       { label: "Solo en algunas ventas", score: 3, slug: "some-sales" },
       { label: "No", score: 0, slug: "no" },
     ],
-    condition: (responses) => responses[11]?.slug === "rent-or-lease",
+    condition: (responses) => responses[10]?.slug === "rent-or-lease",
   },
 ];
