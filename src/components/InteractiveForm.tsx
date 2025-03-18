@@ -109,9 +109,25 @@ export default function InteractiveForm({ questions, onSubmit }: { questions: Qu
       {filteredQuestions[currentStep].link && (
         <Card className="mt-4 w-full max-w-lg p-4 bg-white shadow-md border-l-4 border-blue-500 text-left">
           <p className="text-lg font-semibold">Importante:</p>
-          <a href={filteredQuestions[currentStep].link} target="_blank" rel="noopener noreferrer" className="text-blue-500 text-base underline">
-            {filteredQuestions[currentStep].linkDescription}
-          </a>
+          {typeof filteredQuestions[currentStep].link === "string" && (
+            <a href={filteredQuestions[currentStep].link} target="_blank" rel="noopener noreferrer" className="text-blue-500 text-base underline">
+              {filteredQuestions[currentStep].linkDescription}
+            </a>
+          )}
+          {typeof filteredQuestions[currentStep].link !== "string" && (
+            <p>
+              <span>{filteredQuestions[currentStep].linkDescription}</span>
+              <ul className="list-disc list-inside mt-2">
+                {filteredQuestions[currentStep].link.map((link, index) => (
+                  <li key={index}>
+                    <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 text-base underline">
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </p>
+          )}
         </Card>
       )}
     </div>
