@@ -27,10 +27,11 @@ const ResultCard = ({ score, setShowResults, className }: ResultCardProps) => {
             <hr className="mb-8 w-full" />
             <p className="text-xl text-gray-600 mb-8 max-w-2xl text-left mx-auto">
                 {score < 40
-                    ? <span>✅ <strong>Confiable:</strong> Parece una tienda legítima.</span>
+                    ? <span>⚠️ <strong>Peligroso: </strong> Evita comprar o invertir aqui.</span> 
                     : score < 70
                         ? <span>🤔 <strong>Dudoso:</strong> Investiga más antes de comprar.</span>
-                        : <span>⚠️ <strong>Peligroso: </strong> Evita comprar aqui.</span>}
+                        : 
+                        <span>✅ <strong>Confiable:</strong> Parece una tienda legítima.</span>}
             </p>
             <button className='bg-emerald-600 w-full hover:bg-emerald-700 text-white font-bold py-4 px-4 rounded' onClick={() => setShowResults(false)}>
                 Volver a realizar la evaluación

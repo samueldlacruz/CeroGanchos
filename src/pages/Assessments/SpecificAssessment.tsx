@@ -39,9 +39,10 @@ const SpecificAssessment = () => {
 
     let totalWeight = 0;
     let weightedSum = 0;
+    let maxWeightedSum = 0;
 
     for (const questionId in responses) {
-      const question = questions.find(q => q.id === Number(questionId));
+      const question = shoppingQuestions.find(q => q.id === Number(questionId));
 
       if (question) {
         const response = responses[Number(questionId)];
@@ -51,10 +52,11 @@ const SpecificAssessment = () => {
 
         totalWeight += weight;
         weightedSum += score * weight;
+        maxWeightedSum += weight;
       }
     }
 
-    return totalWeight ? (weightedSum / totalWeight) * 100 : 0;
+    return totalWeight ? ((1 - (weightedSum / maxWeightedSum)) * 100) : 100;
   }
 
   const getViabilityScore = (userResponses: Record<number, { slug: string; isValid: boolean }>) => {
@@ -84,14 +86,14 @@ const SpecificAssessment = () => {
         {isLoading && (
           <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
             <Progress value={progress} className="w-[60%] mb-3" indicatorClassName={cn(progress > 80 ? "bg-emerald-600" : "bg-blue-600")} />
-             <LoadingText 
-               texts={[
-                 "Estamos analizando tus respuestas...",
-                 "Chequeando que tan real es tu compra...",
-                 "Verificando que tan confiable esa inversión...",
-                 "Cargando resultados..."
-                ]}
-             />
+            <LoadingText
+              texts={[
+                "Estamos analizando tus respuestas...",
+                "Chequeando que tan real es tu compra...",
+                "Verificando que tan confiable esa inversión...",
+                "Cargando resultados..."
+              ]}
+            />
           </div>
         )}
         {((topic !== undefined && questions.length) && !showResults && !isLoading) ? (

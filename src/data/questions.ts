@@ -145,7 +145,7 @@ export const shoppingQuestions: Question[] = [
   },
   {
     id: 14,
-    text: "¿No aceptan pago contra entrega?",
+    text: "¿Aceptan pago contra entrega?",
     type: "select",
     options: [
       { score: 0, slug: "yes", label: "Sí" },
@@ -246,7 +246,7 @@ export const investmentQuestions: Question[] = [
     options: [
       { label: "Menos de 1 año", slug: "one", score: 0 },
       { label: "1-3 años", slug: "one-three", score: 1 },
-      { label: "Más de 3 años", slug: "more-three", score: 2 },
+      { label: "Más de 3 años", slug: "more-three", score: 0 },
       { label: "No lo especifica", slug: "none", score: 0 },
     ],
   },
@@ -257,8 +257,8 @@ export const investmentQuestions: Question[] = [
     weight: 6,
     options: [
       { label: "Menos de 3 meses", slug: "three", score: 1 },
-      { label: "3-6 meses", slug: "three-six", score: 3 },
-      { label: "Más de 6 meses", slug: "more-six", score: 5 },
+      { label: "3-6 meses", slug: "three-six", score: 0 },
+      { label: "Más de 6 meses", slug: "more-six", score: 0 },
       { label: "No lo especifica", slug: "none", score: 0 },
     ],
   },
@@ -368,8 +368,13 @@ export const investmentQuestions: Question[] = [
       { score: 0, slug: "yes", label: "Sí" },
       { score: 1, slug: "no", label: "No" },
     ],
-    link: "https://loterianacional.gob.do/Listadoregularizacion/bancas_deportivas",
-    linkDescription: "Consulta la regulación aquí",
+    link: [
+      {
+        label: "Consultar el RNC",
+        url: "https://www.dgii.gov.do/app/WebApps/ConsultasWeb/consultas/rnc.aspx",
+      }
+    ],
+    linkDescription: "Consulta si en su Registro Nacional de Contribuyentes (RNC) aparece como Apuestas deportivas.",
     condition: (responses) => responses[10]?.slug === "sports-betting",
   },
   {
@@ -422,7 +427,7 @@ export const investmentQuestions: Question[] = [
       { score: 1, slug: "yes", label: "Sí" },
       { score: 0, slug: "no", label: "No" },
     ],
-    weight: 4,
+    weight: 3,
     condition: (responses) =>
       ["investment", "investment-fund", "cooperative"].includes(
         responses[10]?.slug
@@ -430,16 +435,30 @@ export const investmentQuestions: Question[] = [
   },
   {
     id: 16,
-    text: "¿Conoces si este puesto de bolsa esta asociado a la Asociación de Puestos de Bolsa de la República Dominicana?",
+    text: "¿Conoces si este puesto de bolsa esta autorizado?",
     type: "select",
     weight: 5,
     options: [
       { score: 0, slug: "yes", label: "Sí" },
       { score: 1, slug: "no", label: "No" },
     ],
-    link: "https://apb.org.do/quienes-somos/",
+    link: [
+      {
+        label: "Asociados a la Asociación de Puestos de Bolsa (APB)",
+        url: "https://www.apb.org.do/quienes-somos/",
+      },
+      {
+        label:
+          "Registro de empresas autorizadas de la Superintendencia del Mercado de Valores",
+        url: "https://www.bvd.com.do/estados-financieros/",
+      },
+      {
+        label: "Puesto de bolsa de la Bolsa de la República Dominicana (BVRD)",
+        url: "https://bvrd.com.do/puestos-de-bolsa/",
+      },
+    ],
     linkDescription:
-      "Verifica si aparece en la parte de asociados de la Asociación de Puestos de Bolsa, consulta aqui",
+      "Verifica si aparece en esta lista de puestos de bolsa autorizados, en los siguientes enlaces",
     condition: (responses) => responses[10]?.slug === "stock-exchange",
   },
   {
