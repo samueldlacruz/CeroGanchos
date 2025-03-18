@@ -1,4 +1,5 @@
 import { ShieldX } from "lucide-react";
+import { Link } from "react-router";
 
 const Footer = () => {
     const year = new Date().getFullYear();
@@ -12,7 +13,15 @@ const Footer = () => {
                         <span className="text-lg font-semibold text-gray-900">CeroGanchos</span>
                     </div>
                     <div className="text-sm text-gray-600 md:mt-0 mt-2">
-                        © {year} CeroGanchos. Todos los derechos reservados.
+                        <nav className="flex space-x-4 mb-5">
+                            <ul>
+                                <li className="hover:underline text-blue-600"><Link to="/terminos-y-condiciones">Términos y condiciones</Link></li>
+                                <li className="hover:underline text-blue-600"><Link to="/politica-de-privacidad">Política de Privacidad</Link></li>
+                            </ul>
+                        </nav>
+                        <span>
+                            © {year} CeroGanchos. Todos los derechos reservados.
+                        </span>
                     </div>
                 </div>
             </div>
