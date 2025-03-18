@@ -27,9 +27,9 @@ const TermsAndConditions = () => {
       </Helmet>
 
       <PageContainer>
-        <Header />
+        <Header withoutNav={true} />
         <main className="max-w-4xl mx-auto p-6 text-gray-800">
-          <h1 className="text-3xl font-bold text-center mb-6">Términos y Condiciones</h1>
+          <h1 className="text-3xl font-bold text-center mb-6 bg-emerald-700 p-3 text-white">Términos y Condiciones</h1>
 
           <section className="mb-6">
             <h2 className="text-xl font-semibold mb-2">1. Aceptación de los Términos</h2>
@@ -66,7 +66,7 @@ const TermsAndConditions = () => {
 
           <section className="mb-6">
             <h2 className="text-xl font-semibold mb-2">7. Privacidad y Protección de Datos</h2>
-            <p>El usuario acepta nuestra <a href="/privacy-policy" className="text-blue-600 hover:underline">Política de Privacidad</a>.</p>
+            <p>El usuario acepta nuestra <a href="/politica-de-privacidad" className="text-blue-600 hover:underline">Política de Privacidad</a>.</p>
           </section>
 
           <section className="mb-6">
