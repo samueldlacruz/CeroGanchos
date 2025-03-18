@@ -450,7 +450,7 @@ export const investmentQuestions: Question[] = [
       {
         label:
           "Registro de empresas autorizadas de la Superintendencia del Mercado de Valores",
-        url: "https://www.bvd.com.do/estados-financieros/",
+        url: "https://simv.gob.do/registro-del-mercado-de-valores/",
       },
       {
         label: "Puesto de bolsa de la Bolsa de la República Dominicana (BVRD)",
