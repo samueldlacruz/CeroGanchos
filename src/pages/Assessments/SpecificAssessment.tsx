@@ -12,6 +12,7 @@ import { Question } from '../../interfaces/Question'
 import { Progress } from '../../components/ui/progress'
 import LoadingText from '../../components/LoadingText'
 import { cn } from '../../lib/utils'
+import FeedbackBanner from '../../components/FeedbackBanner'
 
 const questionsByTopic: Record<string, Question[]> = {
   "compras": shoppingQuestions,
@@ -82,6 +83,8 @@ const SpecificAssessment = () => {
   return (
     <PageContainer>
       <Header withoutNav={true} />
+      {showResults && <FeedbackBanner />}
+      
       <main className="h-full">
         {isLoading && (
           <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
