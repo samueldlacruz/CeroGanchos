@@ -23,7 +23,7 @@ const Count: React.FC<CountProps> = ({ number, duration }) => {
         start = parsedNumber;
         clearInterval(timer);
       }
-      setCount(start.toFixed(2));
+      setCount(start.toFixed(0));
     }, 50);
 
     return () => clearInterval(timer);

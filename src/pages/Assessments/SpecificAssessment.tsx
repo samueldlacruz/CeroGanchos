@@ -1,18 +1,19 @@
+import { Redo2, Undo2 } from 'lucide-react'
 import { useState } from 'react'
-import { useParams } from 'react-router'
-import DisclaimerCard from '../../components/DisclaimerCard'
+import { useNavigate, useParams } from 'react-router'
+import FeedbackBanner from '../../components/FeedbackBanner'
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import InteractiveForm from '../../components/InteractiveForm'
+import LoadingText from '../../components/LoadingText'
 import PageContainer from '../../components/PageContainer'
 import ResultCard from '../../components/ResultCard'
 import TipsCard from '../../components/TipsCard'
+import { Button } from '../../components/ui/button'
+import { Progress } from '../../components/ui/progress'
 import { investmentQuestions, investmentTips, shoppingQuestions, shoppingTips } from '../../data/questions'
 import { Question } from '../../interfaces/Question'
-import { Progress } from '../../components/ui/progress'
-import LoadingText from '../../components/LoadingText'
 import { cn } from '../../lib/utils'
-import FeedbackBanner from '../../components/FeedbackBanner'
 
 const questionsByTopic: Record<string, Question[]> = {
   "compras": shoppingQuestions,
@@ -27,6 +28,7 @@ const tipsByTopic: Record<string, string[]> = {
 const SpecificAssessment = () => {
 
   const { topic } = useParams()
+  const navigate = useNavigate();
   const [showResults, setShowResults] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [viabilityScore, setViabilityScore] = useState(0);
@@ -40,10 +42,9 @@ const SpecificAssessment = () => {
 
     let totalWeight = 0;
     let weightedSum = 0;
-    let maxWeightedSum = 0;
 
     for (const questionId in responses) {
-      const question = shoppingQuestions.find(q => q.id === Number(questionId));
+      const question = questions.find(q => q.id === Number(questionId));
 
       if (question) {
         const response = responses[Number(questionId)];
@@ -53,11 +54,10 @@ const SpecificAssessment = () => {
 
         totalWeight += weight;
         weightedSum += score * weight;
-        maxWeightedSum += weight;
       }
     }
 
-    return totalWeight ? ((1 - (weightedSum / maxWeightedSum)) * 100) : 100;
+    return totalWeight ? (weightedSum / totalWeight) * 100 : 0;
   }
 
   const getViabilityScore = (userResponses: Record<number, { slug: string; isValid: boolean }>) => {
@@ -84,7 +84,7 @@ const SpecificAssessment = () => {
     <PageContainer>
       <Header withoutNav={true} />
       {showResults && <FeedbackBanner />}
-      
+
       <main className="h-full">
         {isLoading && (
           <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
@@ -107,14 +107,25 @@ const SpecificAssessment = () => {
         ) : (
           <>
             {showResults && (
-              <div className="place-content-center fade-in-10 duration-150 ease-in-out items-center bg-gray-200 grid grid-cols-8 grid-rows-3 md:grid-rows-2 gap-4 py-10 px-4 md:px-0">
+              <div className="fade-in-10 duration-150 ease-in-out items-center justify-center flex flex-col bg-gray-200 gap-4 py-10 px-4 md:px-0">
                 <ResultCard
-                  score={viabilityScore}
+                  score={50}
                   setShowResults={setShowResults}
-                  className="col-span-3 row-span-2 md:col-start-2 col-start-1 lg:col-end-5 md:col-end-8 col-end-9"
+                  className=""
                 />
-                <TipsCard className="col-span-3 lg:col-start-5 md:col-start-2 col-start-1 md:col-end-8 col-end-9" tips={tips} />
-                <DisclaimerCard className="col-span-3 lg:col-start-5 md:col-start-2 col-start-1 md:col-end-8 col-end-9" />
+                <TipsCard className="" tips={tips} />
+                {/* <DisclaimerCard className="" /> */}
+
+                <div className="flex w-full max-w-xl pt-5 items-center justify-between gap-4">
+                  <Button className='bg-blue-600 w-full flex gap-2 hover:bg-blue-700 items-center py-6 text-white font-bold rounded' onClick={() => setShowResults(false)}>
+                    <Undo2 className="h-6 w-6" />
+                    Volver a realizarla
+                  </Button>
+                  <Button className="bg-gray-500 w-full hover:bg-gray-700 flex gap-2 items-center py-6 text-white font-bold rounded " onClick={() => navigate("/evaluaciones")}>
+                    <Redo2 className="h-6 w-6" />
+                    Realizar otra evaluación
+                  </Button>
+                </div>
               </div>
             )}
           </>
