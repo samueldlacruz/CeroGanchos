@@ -109,11 +109,10 @@ const SpecificAssessment = () => {
             {showResults && (
               <div className="fade-in-10 duration-150 ease-in-out items-center justify-center flex flex-col bg-gray-200 gap-4 py-10 px-4 md:px-0">
                 <ResultCard
-                  score={50}
+                  score={viabilityScore}
                   setShowResults={setShowResults}
-                  className=""
                 />
-                <TipsCard className="" tips={tips} />
+                <TipsCard tips={tips} />
                 {/* <DisclaimerCard className="" /> */}
 
                 <div className="flex w-full max-w-xl pt-5 items-center justify-between gap-4">

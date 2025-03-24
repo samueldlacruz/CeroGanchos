@@ -1,5 +1,6 @@
 import { cn } from "../lib/utils"
 import Count from "./Count"
+import RiskIndicator from "./RiskIndicator"
 import { Button } from "./ui/button"
 import { Card } from "./ui/card"
 
@@ -19,20 +20,7 @@ const ResultCard = ({ score, setShowResults, className }: ResultCardProps) => {
                     <span>
                         Calificacion:
                     </span>
-                    <span className="text-8xl text-white bg-green-600 text-center border-2 px-8 py-4">
-                        {score < 20
-                            ? <span>A +</span>
-                            : score < 40
-                                ? <span>A</span>
-                                : score < 60
-                                    ? <>A-</>
-                                    : score < 80
-                                        ? <>B</>
-                                        : score < 100
-                                            ? <>C</>
-                                            : <>D</>
-                        }
-                    </span>
+                   <RiskIndicator score={score} />
                 </p>
                 <hr className="w-full" />
                 <h2 className="text-xl justify-between text-gray-600 items-end w-full flex text-center">
