@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 interface CountProps {
-    number: string;
+    number: number;
     duration: number;
 
 }
@@ -11,7 +11,7 @@ const Count: React.FC<CountProps> = ({ number, duration }) => {
 
   useEffect(() => {
     let start = 0;
-    const parsedNumber = parseFloat(number);
+    const parsedNumber = number;
     if (isNaN(parsedNumber) || parsedNumber <= 0) return;
 
     const totalMilSecDur = duration * 1000;
@@ -23,7 +23,7 @@ const Count: React.FC<CountProps> = ({ number, duration }) => {
         start = parsedNumber;
         clearInterval(timer);
       }
-      setCount(start.toFixed(2));
+      setCount(start.toFixed(0));
     }, 50);
 
     return () => clearInterval(timer);
