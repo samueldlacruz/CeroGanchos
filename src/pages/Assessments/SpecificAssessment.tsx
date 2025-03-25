@@ -1,6 +1,7 @@
 import { Redo2, Undo2 } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
+import DialogDisclaimer from '../../components/DialogDisclaimer'
 import FeedbackBanner from '../../components/FeedbackBanner'
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
@@ -14,6 +15,7 @@ import { Progress } from '../../components/ui/progress'
 import { investmentQuestions, investmentTips, shoppingQuestions, shoppingTips } from '../../data/questions'
 import { Question } from '../../interfaces/Question'
 import { cn } from '../../lib/utils'
+import { delay } from '../../utils/delay'
 
 const questionsByTopic: Record<string, Question[]> = {
   "compras": shoppingQuestions,
@@ -33,6 +35,7 @@ const SpecificAssessment = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [viabilityScore, setViabilityScore] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
 
 
   const tips = tipsByTopic[topic!];
@@ -60,10 +63,17 @@ const SpecificAssessment = () => {
     return totalWeight ? (weightedSum / totalWeight) * 100 : 0;
   }
 
+
   const getViabilityScore = (userResponses: Record<number, { slug: string; isValid: boolean }>) => {
     setIsLoading(true);
     const _viabilityScore = calculateWeightedSum(userResponses);
     setViabilityScore(_viabilityScore);
+
+  }
+
+  const handleSubmit = (userResponses: Record<number, { slug: string; isValid: boolean }>) => {
+    setIsLoading(true);
+    getViabilityScore(userResponses);
 
     const interval = setInterval(() => {
       setProgress((prevProgress) => {
@@ -77,7 +87,9 @@ const SpecificAssessment = () => {
       setProgress(0);
       setShowResults(true);
       setIsLoading(false);
-    }, 7000)
+    }, 7000);
+
+    delay(10000).then(() => setShowDisclaimer(true));
   }
 
   return (
@@ -102,7 +114,7 @@ const SpecificAssessment = () => {
         {((topic !== undefined && questions.length) && !showResults && !isLoading) ? (
           <InteractiveForm
             questions={questions}
-            onSubmit={getViabilityScore}
+            onSubmit={handleSubmit}
           />
         ) : (
           <>
@@ -113,7 +125,6 @@ const SpecificAssessment = () => {
                   setShowResults={setShowResults}
                 />
                 <TipsCard tips={tips} />
-                {/* <DisclaimerCard className="" /> */}
 
                 <div className="flex w-full max-w-xl pt-5 items-center justify-between gap-4">
                   <Button className='bg-blue-600 w-full flex gap-2 hover:bg-blue-700 items-center py-6 text-white font-bold rounded' onClick={() => setShowResults(false)}>
@@ -131,6 +142,7 @@ const SpecificAssessment = () => {
         )}
       </main>
       <Footer />
+      {showDisclaimer && <DialogDisclaimer isOpen={showDisclaimer} onClose={() => setShowDisclaimer(false)} />}
     </PageContainer>
   )
 }

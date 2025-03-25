@@ -463,17 +463,6 @@ export const investmentQuestions: Question[] = [
   },
   {
     id: 17,
-    text: "¿Te invitan a unirte a un grupo en Whatsapp o Telegram?",
-    type: "select",
-    options: [
-      { score: 1, slug: "yes", label: "Sí" },
-      { score: 0, slug: "no", label: "No" },
-    ],
-    weight: 2,
-    condition: (responses) => responses[10]?.slug !== "other",
-  },
-  {
-    id: 18,
     text: "¿Ofrecen factura o comprobante fiscal por cada venta/alquiler?",
     type: "select",
     weight: 9,
@@ -484,4 +473,15 @@ export const investmentQuestions: Question[] = [
     ],
     condition: (responses) => responses[10]?.slug === "rent-or-lease",
   },
+  {
+    id: 18,
+    text: "¿Te invitan a unirte a un grupo en Whatsapp o Telegram?",
+    type: "select",
+    options: [
+      { score: 1, slug: "yes", label: "Sí" },
+      { score: 0, slug: "no", label: "No" },
+    ],
+    weight: 2,
+    condition: (responses) => responses[10]?.slug !== "other",
+  }
 ];

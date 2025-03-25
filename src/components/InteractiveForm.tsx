@@ -3,6 +3,7 @@ import { Question } from "../interfaces/Question";
 import { cn } from "../lib/utils";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
+import { delay } from "../utils/delay";
 
 export default function InteractiveForm({ questions, onSubmit }: { questions: Question[], onSubmit: (responses: Record<number, { slug: string, isValid: boolean }>) => void }) {
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -27,6 +28,14 @@ export default function InteractiveForm({ questions, onSubmit }: { questions: Qu
     
     setResponses(prevResponses => {
       const newResponses = { ...prevResponses, [question.id]: { slug: optionSlug, isValid } };
+      
+      const updatedQuestions = questions.filter(q => !q.condition || q.condition(newResponses));
+      const newTotalSteps = updatedQuestions.length;
+      
+      if (isValid && currentStep < newTotalSteps - 1) {
+        delay(200).then(() => setCurrentStep(currentStep + 1));
+      }
+  
       return newResponses;
     });
   };
