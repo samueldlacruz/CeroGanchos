@@ -60,7 +60,7 @@ const SpecificAssessment = () => {
       }
     }
 
-    return totalWeight ? (weightedSum / totalWeight) * 100 : 0;
+    return totalWeight ? Math.min((weightedSum / totalWeight) * 100, 100) : 0;
   }
 
 
