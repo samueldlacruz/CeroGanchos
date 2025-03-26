@@ -10,12 +10,12 @@ const DialogDisclaimer = ({ isOpen, onClose }: { isOpen: boolean, onClose: () =>
                     <AlertTriangle className="inline mr-2 mb-1 text-yellow-500" />
                     <DialogTitle>Nota</DialogTitle>
                 </div>
-                <DialogDescription>
+                <DialogDescription className="text-left">
                     Por favor, leer cuidadosamente antes de realizar cualquier inversión.
                 </DialogDescription>
             </DialogHeader>
             <hr />
-            <p className="text-base leading-[21px] mb-4">
+            <p className="text-base leading-[21px] text-justify mb-4">
                 La evaluación proporcionada en este sitio es solo orientativa y no garantiza una compra segura o exitosa. Si decides invertir o realizar una compra, lo haces bajo tu propio riesgo. No nos hacemos responsables de ninguna pérdida financiera, fraude o inconveniente. Además, los enlaces a otras páginas web son solo para referencia y no implican respaldo ni responsabilidad sobre su contenido, especialmente si la información no está actualizada.
             </p>
             <DialogFooter>
