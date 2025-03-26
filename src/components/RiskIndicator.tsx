@@ -1,5 +1,5 @@
 const getRiskRating = (score: number) => {
-    if (score < 5) return { grade: "AAA", color: "bg-green-700" };
+    if (score < 5) return { grade: "AAA", color: "bg-green-700", meaning: "" };
     if (score < 10) return { grade: "AA+", color: "bg-green-600" };
     if (score < 15) return { grade: "AA", color: "bg-green-500" };
     if (score < 20) return { grade: "AA-", color: "bg-green-400" };
@@ -22,13 +22,40 @@ const getRiskRating = (score: number) => {
     return { grade: "D", color: "bg-gray-900" };
 };
 
+const riskMeanings: Record<string, string> = {
+    "AAA": "Riesgo mínimo",
+    "AA+": "Muy bajo riesgo con tendencia positiva",
+    "AA": "Muy bajo riesgo",
+    "AA-": "Muy bajo riesgo con tendencia negativa",
+    "A+": "Bajo riesgo con tendencia positiva",
+    "A": "Bajo riesgo",
+    "A-": "Bajo riesgo con tendencia negativa",
+    "BBB+": "Riesgo moderado con tendencia positiva",
+    "BBB": "Riesgo moderado",
+    "BBB-": "Riesgo moderado con tendencia negativa",
+    "BB+": "Moderado a alto riesgo con tendencia positiva",
+    "BB": "Moderado a alto riesgo",
+    "BB-": "Moderado a alto riesgo con tendencia negativa",
+    "B+": "Riesgo alto con tendencia positiva",
+    "B": "Riesgo alto",
+    "B-": "Riesgo alto con tendencia negativa",
+    "CCC+": "Riesgo muy alto con tendencia positiva",
+    "CCC": "Riesgo muy alto",
+    "CCC-": "Riesgo muy alto con tendencia negativa",
+    "C": "Riesgo crítico",
+    "D": "Incumplimiento de pago"
+};
+
 const RiskIndicator = ({ score }: { score: number }) => {
     const { grade, color } = getRiskRating(score);
 
     return (
-        <span className={`text-6xl text-white ${color} text-center  px-8 py-4`}>
-            {grade}
-        </span>
+        <div className="flex flex-col sm:items-end items-start">
+            <span className="text-xs md:text-sm w-full md:w-2/3 md:text-right text-left text-gray-500">{riskMeanings[grade] || "Desconocido"}</span>
+            <p className={`${color} p-4 text-center mt-2`}>
+                <span className="text-4xl text-white">{grade}</span>
+            </p>
+        </div>
     );
 };
 

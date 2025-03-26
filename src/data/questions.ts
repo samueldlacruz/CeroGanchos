@@ -290,7 +290,6 @@ export const investmentQuestions: Question[] = [
     weight: 2,
     options: [
       { score: 0, slug: "yes", label: "Sí" },
-      { score: 1, slug: "no", label: "No" },
       { label: "No se", slug: "idk", score: 0 },
     ],
   },
