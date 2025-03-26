@@ -17,12 +17,12 @@ import { Question } from '../../interfaces/Question'
 import { cn } from '../../lib/utils'
 import { delay } from '../../utils/delay'
 
-const questionsByTopic: Record<string, Question[]> = {
+const QUESTIONS_BY_TOPIC: Record<string, Question[]> = {
   "compras": shoppingQuestions,
   "inversiones": investmentQuestions
 };
 
-const tipsByTopic: Record<string, string[]> = {
+const TIPS_BY_TOPIC: Record<string, string[]> = {
   "compras": shoppingTips,
   "inversiones": investmentTips
 };
@@ -36,10 +36,11 @@ const SpecificAssessment = () => {
   const [viabilityScore, setViabilityScore] = useState(0);
   const [progress, setProgress] = useState(0);
   const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [summaryOfResponses, setSummaryOfResponses] = useState<Array<{ question: string; response: string }>>([]);
 
 
-  const tips = tipsByTopic[topic!];
-  const questions = questionsByTopic[topic!];
+  const tips = TIPS_BY_TOPIC[topic!];
+  const questions = QUESTIONS_BY_TOPIC[topic!];
 
   const calculateWeightedSum = (responses: Record<number, { slug: string; isValid: boolean }>) => {
 
@@ -47,12 +48,12 @@ const SpecificAssessment = () => {
     let weightedSum = 0;
 
     for (const questionId in responses) {
-      const question = questions.find(q => q.id === Number(questionId));
+      const question = questions.find(question => question.id === Number(questionId));
 
       if (question) {
         const response = responses[Number(questionId)];
 
-        const score = question.options?.find(o => o.slug === response.slug)?.score || 0;
+        const score = question.options?.find(option => option.slug === response.slug)?.score || 0;
         const weight = question.weight || 0;
 
         totalWeight += weight;
@@ -72,14 +73,20 @@ const SpecificAssessment = () => {
   }
 
   const handleSubmit = (userResponses: Record<number, { slug: string; isValid: boolean }>) => {
+    const _summaryOfResponses = Object.entries(userResponses).map(([questionId, response]) => {
+      const question = questions.find(question => question.id === Number(questionId));
+      return {
+        question: question?.text || '',
+        response: question?.options?.find(option => option.slug === response.slug)?.label || ''
+      }
+    })
+    setSummaryOfResponses(_summaryOfResponses);
+
     setIsLoading(true);
     getViabilityScore(userResponses);
 
     const interval = setInterval(() => {
-      setProgress((prevProgress) => {
-        const newProgress = prevProgress + 10;
-        return newProgress > 100 ? 100 : newProgress;
-      });
+      setProgress(prev => (prev + 10 > 100 ? 100 : prev + 10));
     }, 500);
 
     setTimeout(() => {
@@ -98,49 +105,39 @@ const SpecificAssessment = () => {
       {showResults && <FeedbackBanner />}
 
       <main className="h-full">
-        {isLoading && (
+        {isLoading ? (
           <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
-            <Progress value={progress} className="w-[60%] mb-3" indicatorClassName={cn(progress > 80 ? "bg-emerald-600" : "bg-blue-600")} />
-            <LoadingText
-              texts={[
-                "Estamos analizando tus respuestas...",
-                "Chequeando que tan real es tu compra...",
-                "Verificando que tan confiable esa inversión...",
-                "Cargando resultados..."
-              ]}
-            />
+            <Progress value={progress} className="w-[60%] mb-3" indicatorClassName={cn(progress > 80 ? 'bg-emerald-600' : 'bg-blue-600')} />
+            <LoadingText texts={[
+              "Estamos analizando tus respuestas...",
+              "Chequeando qué tan real es tu compra...",
+              "Verificando qué tan confiable es esa inversión...",
+              "Cargando resultados..."
+            ]} />
           </div>
-        )}
-        {((topic !== undefined && questions.length) && !showResults && !isLoading) ? (
-          <InteractiveForm
-            questions={questions}
-            onSubmit={handleSubmit}
-          />
+        ) : showResults ? (
+          <div className="fade-in-10 duration-150 ease-in-out flex flex-col items-center bg-gray-200 gap-4 py-10 px-4 md:px-0">
+            <ResultCard
+              summaryOfResponses={summaryOfResponses}
+              score={viabilityScore}
+            />
+            <TipsCard tips={tips} />
+            <div className="flex sm:flex-row flex-col w-full max-w-xl pt-5 items-center justify-between gap-4">
+              <Button className="bg-blue-600 w-full flex gap-2 hover:bg-blue-700 items-center py-6 text-white font-bold rounded" onClick={() => setShowResults(false)}>
+                <Undo2 className="h-6 w-6" />
+                Volver a realizarla
+              </Button>
+              <Button className="bg-gray-500 w-full hover:bg-gray-700 flex gap-2 items-center py-6 text-white font-bold rounded" onClick={() => navigate('/evaluaciones')}>
+                <Redo2 className="h-6 w-6" />
+                Realizar otra evaluación
+              </Button>
+            </div>
+          </div>
         ) : (
-          <>
-            {showResults && (
-              <div className="fade-in-10 duration-150 ease-in-out items-center justify-center flex flex-col bg-gray-200 gap-4 py-10 px-4 md:px-0">
-                <ResultCard
-                  score={viabilityScore}
-                  setShowResults={setShowResults}
-                />
-                <TipsCard tips={tips} />
-
-                <div className="flex w-full max-w-xl pt-5 items-center justify-between gap-4">
-                  <Button className='bg-blue-600 w-full flex gap-2 hover:bg-blue-700 items-center py-6 text-white font-bold rounded' onClick={() => setShowResults(false)}>
-                    <Undo2 className="h-6 w-6" />
-                    Volver a realizarla
-                  </Button>
-                  <Button className="bg-gray-500 w-full hover:bg-gray-700 flex gap-2 items-center py-6 text-white font-bold rounded " onClick={() => navigate("/evaluaciones")}>
-                    <Redo2 className="h-6 w-6" />
-                    Realizar otra evaluación
-                  </Button>
-                </div>
-              </div>
-            )}
-          </>
+          questions.length > 0 && <InteractiveForm questions={questions} onSubmit={handleSubmit} />
         )}
       </main>
+
       <Footer />
       {showDisclaimer && <DialogDisclaimer isOpen={showDisclaimer} onClose={() => setShowDisclaimer(false)} />}
     </PageContainer>
