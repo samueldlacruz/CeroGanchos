@@ -17,7 +17,7 @@ export default function LoadingText({ texts }: { texts: string[] }) {
     }, [texts.length]);
 
     return (
-        <p className={`text-lg font-semibold transition-opacity duration-500 ${fade ? "opacity-100" : "opacity-0"}`}>
+        <p className={`text-lg text-center font-semibold transition-opacity duration-500 ${fade ? "opacity-100" : "opacity-0"}`}>
             {texts[index]}
         </p>
     );
