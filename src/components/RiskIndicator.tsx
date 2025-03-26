@@ -50,11 +50,11 @@ const RiskIndicator = ({ score }: { score: number }) => {
     const { grade, color } = getRiskRating(score);
 
     return (
-        <div className="flex flex-col items-end">
-            <span className="text-sm text-right text-gray-500">{riskMeanings[grade] || "Desconocido"}</span>
-            <div className={`${color} w-3/4 p-4 text-center mt-2`}>
-                <span className="text-6xl text-white">{grade}</span>
-            </div>
+        <div className="flex flex-col sm:items-end items-start">
+            <span className="text-xs md:text-sm w-full md:w-2/3 md:text-right text-left text-gray-500">{riskMeanings[grade] || "Desconocido"}</span>
+            <p className={`${color} p-4 text-center mt-2`}>
+                <span className="text-4xl text-white">{grade}</span>
+            </p>
         </div>
     );
 };
