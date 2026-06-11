@@ -8,11 +8,16 @@ import Header from '../../components/Header'
 import InteractiveForm from '../../components/InteractiveForm'
 import LoadingText from '../../components/LoadingText'
 import PageContainer from '../../components/PageContainer'
-import ResultCard from '../../components/ResultCard'
-import TipsCard from '../../components/TipsCard'
+import ResultGauge from '../../components/ResultGauge'
+import CategoryBreakdown from '../../components/CategoryBreakdown'
+import PersonalizedTips from '../../components/PersonalizedTips'
+import ActionRecommendations from '../../components/ActionRecommendations'
+import ShareButtons from '../../components/ShareButtons'
+import EnhancedResultDetail from '../../components/EnhancedResultDetail'
+import IntroScreen from '../../components/IntroScreen'
 import { Button } from '../../components/ui/button'
 import { Progress } from '../../components/ui/progress'
-import { investmentQuestions, investmentTips, shoppingQuestions, shoppingTips } from '../../data/questions'
+import { investmentQuestions, shoppingQuestions, categoryLabels } from '../../data/questions'
 import { Question } from '../../interfaces/Question'
 import { cn } from '../../lib/utils'
 import { delay } from '../../utils/delay'
@@ -22,25 +27,39 @@ const QUESTIONS_BY_TOPIC: Record<string, Question[]> = {
   "inversiones": investmentQuestions
 };
 
-const TIPS_BY_TOPIC: Record<string, string[]> = {
-  "compras": shoppingTips,
-  "inversiones": investmentTips
+const INTRO_CONFIG: Record<string, { title: string; description: string }> = {
+  compras: {
+    title: "Chequeo de Compra Online",
+    description: "Evalúa si una tienda online o red social es confiable antes de realizar una compra. Analizaremos la plataforma, el vendedor, los métodos de pago y la calidad del producto.",
+  },
+  inversiones: {
+    title: "Invierte con Menos Riesgo",
+    description: "Evalúa si una plataforma de inversión o negocio financiero es legítimo. Verificaremos su legalidad, transparencia, regulación y prácticas operativas.",
+  },
 };
 
 const SpecificAssessment = () => {
 
   const { topic } = useParams()
   const navigate = useNavigate();
+  const [started, setStarted] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [viabilityScore, setViabilityScore] = useState(0);
   const [progress, setProgress] = useState(0);
   const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [summaryOfResponses, setSummaryOfResponses] = useState<Array<{ question: string; response: string }>>([]);
+  const [userResponses, setUserResponses] = useState<Record<number, { slug: string; isValid: boolean }>>({});
 
-
-  const tips = TIPS_BY_TOPIC[topic!];
   const questions = QUESTIONS_BY_TOPIC[topic!];
+  const introConfig = INTRO_CONFIG[topic!];
+
+  const categories = [...new Set(
+    questions
+      .filter(q => q.category)
+      .map(q => categoryLabels[q.category!] || q.category!)
+  )];
 
   const calculateWeightedSum = (responses: Record<number, { slug: string; isValid: boolean }>) => {
 
@@ -61,7 +80,7 @@ const SpecificAssessment = () => {
       }
     }
 
-    return totalWeight ? Math.min((weightedSum / totalWeight) * 100, 100) : 0;
+    return totalWeight ? Math.round(Math.min((weightedSum / totalWeight) * 100, 100)) : 0;
   }
 
 
@@ -81,6 +100,7 @@ const SpecificAssessment = () => {
       }
     })
     setSummaryOfResponses(_summaryOfResponses);
+    setUserResponses(userResponses);
 
     setIsLoading(true);
     getViabilityScore(userResponses);
@@ -94,9 +114,9 @@ const SpecificAssessment = () => {
       setProgress(0);
       setShowResults(true);
       setIsLoading(false);
-    }, 7000);
+    }, 5000);
 
-    delay(10000).then(() => setShowDisclaimer(true));
+    delay(8000).then(() => setShowDisclaimer(true));
   }
 
   return (
@@ -105,33 +125,55 @@ const SpecificAssessment = () => {
       {showResults && <FeedbackBanner />}
 
       <main className="h-full">
-        {isLoading ? (
-          <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
-            <Progress value={progress} className="w-[60%] mb-3" indicatorClassName={cn(progress > 80 ? 'bg-emerald-600' : 'bg-blue-600')} />
+        {!started ? (
+          <IntroScreen
+            title={introConfig.title}
+            description={introConfig.description}
+            questionCount={questions.length}
+            categories={categories}
+            onStart={() => setStarted(true)}
+          />
+        ) : isLoading ? (
+          <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center">
+            <Progress value={progress} className="w-[60%] mb-3" indicatorClassName={cn(progress > 80 ? 'bg-navy-600' : 'bg-mblue-500')} />
             <LoadingText texts={[
-              "Estamos analizando tus respuestas...",
-              "Chequeando qué tan real es tu compra...",
-              "Verificando qué tan confiable es esa inversión...",
-              "Cargando resultados..."
+              "Analizando tus respuestas...",
+              "Verificando la información proporcionada...",
+              "Cruzando datos con fuentes oficiales...",
+              "Generando tu calificación..."
             ]} />
           </div>
         ) : showResults ? (
-          <div className="fade-in-10 duration-150 ease-in-out flex flex-col items-center bg-gray-200 gap-4 py-10 px-4 md:px-0">
-            <ResultCard
-              summaryOfResponses={summaryOfResponses}
-              score={viabilityScore}
-            />
-            <TipsCard tips={tips} />
-            <div className="flex sm:flex-row flex-col w-full max-w-xl pt-5 items-center justify-between gap-4">
-              <Button className="bg-blue-600 w-full flex gap-2 hover:bg-blue-700 items-center py-6 text-white font-bold rounded" onClick={() => setShowResults(false)}>
-                <Undo2 className="h-6 w-6" />
+          <div className="fade-in-10 duration-150 ease-in-out flex flex-col items-center gap-8 py-10 px-4 md:px-0">
+            <div className="text-center">
+              <h2 className="text-2xl font-serif font-bold text-navy-600 mb-2">Tu resultado</h2>
+              <p className="text-gray-500 text-sm">Basado en tus {summaryOfResponses.length} respuestas</p>
+            </div>
+
+            <ResultGauge score={viabilityScore} />
+
+            <CategoryBreakdown responses={userResponses} questions={questions} />
+
+            <ActionRecommendations score={viabilityScore} />
+
+            <PersonalizedTips responses={userResponses} questions={questions} />
+
+            <ShareButtons score={viabilityScore} topic={topic!} />
+
+            <div className="flex sm:flex-row flex-col w-full max-w-xl items-center justify-between gap-4">
+              <Button className="bg-mblue-500 w-full flex gap-2 hover:bg-mblue-600 items-center py-5 text-white font-semibold rounded-md text-sm" onClick={() => { setShowResults(false); setStarted(false); }}>
+                <Undo2 className="h-4 w-4" />
                 Volver a realizarla
               </Button>
-              <Button className="bg-gray-500 w-full hover:bg-gray-700 flex gap-2 items-center py-6 text-white font-bold rounded" onClick={() => navigate('/evaluaciones')}>
-                <Redo2 className="h-6 w-6" />
+              <Button className="bg-gray-400 w-full hover:bg-gray-500 flex gap-2 items-center py-5 text-white font-semibold rounded-md text-sm" onClick={() => navigate('/evaluaciones')}>
+                <Redo2 className="h-4 w-4" />
                 Realizar otra evaluación
               </Button>
             </div>
+
+            <button onClick={() => setShowDetail(true)} className="text-mblue-500 underline text-sm hover:text-mblue-600">
+              Ver detalle de cada respuesta
+            </button>
           </div>
         ) : (
           questions.length > 0 && <InteractiveForm questions={questions} onSubmit={handleSubmit} />
@@ -140,6 +182,14 @@ const SpecificAssessment = () => {
 
       <Footer />
       {showDisclaimer && <DialogDisclaimer isOpen={showDisclaimer} onClose={() => setShowDisclaimer(false)} />}
+      {showDetail && (
+        <EnhancedResultDetail
+          responses={userResponses}
+          questions={questions}
+          isOpen={showDetail}
+          onClose={() => setShowDetail(false)}
+        />
+      )}
     </PageContainer>
   )
 }

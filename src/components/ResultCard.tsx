@@ -18,33 +18,31 @@ const ResultCard = ({ score, className, summaryOfResponses }: ResultCardProps) =
 
     return (
         <Fragment>
-            <Card className={cn(className, "w-full max-w-xl p-6 items-center flex flex-col justify-center rounded-md h-full")}>
-                <h2 className="text-3xl font-bold text-left mb-12">Resultado</h2>
-                <div className="flex gap-5 w-full flex-col font-semibold mb-12 px-5">
-                    <div className="text-xl flex flex-col sm:flex-row text-gray-600 justify-between sm:items-end items-start text-left">
-                        <span>
-                            Calificacion:
-                        </span>
+            <Card className={cn(className, "w-full max-w-xl p-6 items-center flex flex-col justify-center rounded-lg border border-gray-200 shadow-sm h-full")}>
+                <h2 className="text-2xl font-serif font-bold text-navy-600 text-left mb-12">Resultado</h2>
+                <div className="flex gap-5 w-full font-semibold mb-12 px-5">
+                    <div className="text-lg flex flex-col sm:flex-row text-gray-500 justify-between sm:items-end items-start text-left w-full">
+                        <span className="text-sm">Calificación:</span>
                         <RiskIndicator score={score} />
                     </div>
-                    <hr className="w-full" />
-                    <h2 className="text-xl flex flex-col sm:flex-row text-gray-600 justify-between sm:items-end items-start text-center">
-                        Nivel de riesgo:
-                        <p className="text-6xl">
+                    <hr className="w-full border-gray-100" />
+                    <div className="text-lg flex flex-col sm:flex-row text-gray-500 justify-between sm:items-end items-start text-center w-full">
+                        <span className="text-sm">Nivel de riesgo:</span>
+                        <p className="text-5xl font-serif font-bold text-navy-600">
                             <Count duration={1} number={score} />
-                            <small className="text-4xl">{" "}%</small>
+                            <small className="text-3xl text-gray-400">{" "}%</small>
                         </p>
-                    </h2>
-                    <hr className="w-full" />
+                    </div>
+                    <hr className="w-full border-gray-100" />
                 </div>
                 <div className="flex items-end justify-end w-full gap-4 px-5">
-                    <Button className='bg-blue-600 flex gap-2 hover:bg-blue-700 sm:w-auto w-full items-center py-6 px-8 text-white font-bold rounded' onClick={() => setShowDetails(true)}>
+                    <Button className='bg-navy-600 flex gap-2 hover:bg-navy-500 sm:w-auto w-full items-center py-5 px-8 text-white font-semibold rounded-md text-sm' onClick={() => setShowDetails(true)}>
                         Ver Detalles
                     </Button>
                 </div>
             </Card>
             {showDetails && (
-                <DialogAssessmentSummary 
+                <DialogAssessmentSummary
                     summaryOfResponses={summaryOfResponses}
                     isOpen={showDetails}
                     onClose={() => setShowDetails(false)}
